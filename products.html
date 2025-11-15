@@ -3,53 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FoodBankProject</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Pantry Products</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header>
-    <h1>Welcome</h1>
+    <h1>Pantry Items</h1>
     <div class="nav-buttons">
-      <button onclick="toggleModal('signinModal')">Sign In</button>
-      <button onclick="toggleModal('signupModal')">Sign Up</button>
+      <button onclick="location.href='foodbak.html'">Home</button>
       <button onclick="location.href='cart.html'">Cart</button>
     </div>
   </header>
 
-  <div class="hero">
-    <h2>Food Pantry</h2>
+  <div class="hero-products">
+    <h2>Pantry Products</h2>
   </div>
 
-  <div class="section">
-    <h2>Featured Products</h2>
+    <div class="section">
+    <h2>Grains</h2>
     <div class="products">
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 1" />
-        <h3>Art Print A</h3>
-        <p>$40</p>
-        <button onclick="addToCart('Art Print A', 40)">Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 2" />
-        <h3>Canvas B</h3>
-        <p>$65</p>
-        <button onclick="addToCart('Canvas B', 65)">Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 3" />
-        <h3>Poster C</h3>
-        <p>$25</p>
-        <button onclick="addToCart('Poster C', 25)">Add to Cart</button>
-      </div>
+        <div class="product">
+        <img src="images/rice.jpg" alt="White Rice" />
+        <h3>White Rice</h3>
+        <p>5 lb bag</p>
+        <button onclick="addToCart('White Rice')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/oats.jpg" alt="Rolled Oats" />
+        <h3>Rolled Oats</h3>
+        <p>2 lb bag</p>
+        <button onclick="addToCart('Rolled Oats')">Add to Cart</button>
+        </div>
+    </div>
+    </div>
+    
+    <div class="section">
+    <h2>Fats & Oils</h2>
+    <div class="products">
+        <div class="product">
+        <img src="images/olive-oil.jpg" alt="Olive Oil" />
+        <h3>Olive Oil</h3>
+        <p>16 oz bottle</p>
+        <button onclick="addToCart('Olive Oil')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/peanut-butter.jpg" alt="Peanut Butter" />
+        <h3>Peanut Butter</h3>
+        <p>16 oz jar</p>
+        <button onclick="addToCart('Peanut Butter')">Add to Cart</button>
+        </div>
+    </div>
     </div>
 
-    <div style="text-align: center; margin-top: 40px;">
-      <button onclick="location.href='products.html'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;">
-        View All Pantry Products
-      </button>
+    <div class="section">
+    <h2>Canned Goods</h2>
+    <div class="products">
+        <div class="product">
+        <img src="images/beans.jpg" alt="Black Beans" />
+        <h3>Black Beans</h3>
+        <p>15 oz can</p>
+        <button onclick="addToCart('Black Beans')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/tomatoes.jpg" alt="Diced Tomatoes" />
+        <h3>Diced Tomatoes</h3>
+        <p>14 oz can</p>
+        <button onclick="addToCart('Diced Tomatoes')">Add to Cart</button>
+        </div>
     </div>
-
+    </div>
+    
+  <div class ="section">
     <div class="cart-status" id="cartStatus">
       🛒 Your cart is empty.
     </div>
