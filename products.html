@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pantry Products</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Pantry Items</h1>
+    <div class="nav-buttons">
+      <button onclick="location.href='foodbak.html'">Home</button>
+      <button onclick="location.href='cart.html'">Cart</button>
+    </div>
+  </header>
+
+  <div class="hero-products">
+    <h2>Pantry Products</h2>
+  </div>
+
+    <div class="section">
+    <h2>Grains</h2>
+    <div class="products">
+        <div class="product">
+        <img src="images/rice.jpg" alt="White Rice" />
+        <h3>White Rice</h3>
+        <p>5 lb bag</p>
+        <button onclick="addToCart('White Rice')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/oats.jpg" alt="Rolled Oats" />
+        <h3>Rolled Oats</h3>
+        <p>2 lb bag</p>
+        <button onclick="addToCart('Rolled Oats')">Add to Cart</button>
+        </div>
+    </div>
+    </div>
+    
+    <div class="section">
+    <h2>Fats & Oils</h2>
+    <div class="products">
+        <div class="product">
+        <img src="images/olive-oil.jpg" alt="Olive Oil" />
+        <h3>Olive Oil</h3>
+        <p>16 oz bottle</p>
+        <button onclick="addToCart('Olive Oil')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/peanut-butter.jpg" alt="Peanut Butter" />
+        <h3>Peanut Butter</h3>
+        <p>16 oz jar</p>
+        <button onclick="addToCart('Peanut Butter')">Add to Cart</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="section">
+    <h2>Canned Goods</h2>
+    <div class="products">
+        <div class="product">
+        <img src="images/beans.jpg" alt="Black Beans" />
+        <h3>Black Beans</h3>
+        <p>15 oz can</p>
+        <button onclick="addToCart('Black Beans')">Add to Cart</button>
+        </div>
+        <div class="product">
+        <img src="images/tomatoes.jpg" alt="Diced Tomatoes" />
+        <h3>Diced Tomatoes</h3>
+        <p>14 oz can</p>
+        <button onclick="addToCart('Diced Tomatoes')">Add to Cart</button>
+        </div>
+    </div>
+    </div>
+    
+  <div class ="section">
+    <div class="cart-status" id="cartStatus">
+      🛒 Your cart is empty.
+    </div>
+  </div>
+
+  <!-- Sign In Modal -->
+  <div class="modal" id="signinModal">
+    <div class="modal-content">
+      <h2>Sign In</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button onclick="toggleModal('signinModal')">Submit</button>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <h2>Sign Up</h2>
+      <input type="text" placeholder="Name" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button onclick="toggleModal('signupModal')">Register</button>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      updateCartStatus();
+    }
+
+    function updateCartStatus() {
+      const cartDiv = document.getElementById('cartStatus');
+      if (cart.length === 0) {
+        cartDiv.innerText = '🛒 Your cart is empty.';
+        return;
+      }
+      const total = cart.reduce((sum, i) => sum + i.price, 0);
+      const items = cart.map(i => `${i.item} ($${i.price})`).join(', ');
+      cartDiv.innerText = `🛒 Cart: ${items}. Total: $${total}`;
+    }
+
+    function viewCart() {
+      alert(cart.length ? cart.map(i => `${i.item} - $${i.price}`).join('\n') : 'Cart is empty.');
+    }
+
+    function toggleModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Close modals on outside click
+    window.onclick = function(event) {
+      ['signinModal', 'signupModal'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (event.target === modal) modal.style.display = 'none';
+      });
+    };
+  </script>
+
+</body>
+</html>
