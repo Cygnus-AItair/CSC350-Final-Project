@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: #eddcd9;
       color: #333;
     }
@@ -21,15 +21,15 @@
     }
 
     header h1 {
-      margin: 0;
-      font-size: 1.8rem;
+       margin: 0
+       fontsize: 1.8rem;
     }
 
     .nav-buttons button {
       margin-left: 10px;
       padding: 10px 16px;
       border: none;
-      background-color: #333;
+      background-color: #013220;
       color: #f2ebe9;
       cursor: pointer;
       border-radius: 4px;
@@ -41,7 +41,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: white; 
       text-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
@@ -88,7 +88,7 @@
     .product button {
       padding: 10px 16px;
       background: #333;
-      color: white;
+      color: #d88c9a;
       border: none;
       cursor: pointer;
       border-radius: 4px;
@@ -143,29 +143,29 @@
   </header>
 
   <div class="hero">
-    <h2>Food Pantry</h2>
+    <h2>The Pantry</h2>
   </div>
 
   <div class="section">
     <h2>Featured Products</h2>
     <div class="products">
       <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 1" />
-        <h3>Art Print A</h3>
+        <img src="Rice.jpg" alt="Product 1" />
+        <h3>Rice</h3>
         <p>$40</p>
-        <button onclick="addToCart('Art Print A', 40)">Add to Cart</button>
+        <button onclick="addToCart('Rice', 40)">Add to Cart</button>
       </div>
       <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 2" />
-        <h3>Canvas B</h3>
+        <img src="Beans.jpg" alt="Product 2" />
+        <h3>Beans</h3>
         <p>$65</p>
-        <button onclick="addToCart('Canvas B', 65)">Add to Cart</button>
+        <button onclick="addToCart('Beans', 65)">Add to Cart</button>
       </div>
       <div class="product">
-        <img src="https://via.placeholder.com/300x200" alt="Product 3" />
-        <h3>Poster C</h3>
+        <img src="Can Corn.jpg" alt="Product 3" />
+        <h3>Corn</h3>
         <p>$25</p>
-        <button onclick="addToCart('Poster C', 25)">Add to Cart</button>
+        <button onclick="addToCart('Corn', 25)">Add to Cart</button>
       </div>
     </div>
 
@@ -230,7 +230,7 @@
         if (event.target === modal) modal.style.display = 'none';
       });
     };
-  </script>
+  </
 
 </body>
 </html>
