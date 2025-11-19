@@ -83,7 +83,7 @@
     let cart = [];
 
     function addToCart(item, price) {
-      cart.push({ item, price });
+      cart.push({ item, price: Number(price) });
       updateCartStatus();
     }
 
@@ -93,8 +93,8 @@
         cartDiv.innerText = '🛒 Your cart is empty.';
         return;
       }
-      const total = cart.reduce((sum, i) => sum + i.price, 0);
-      const items = cart.map(i => `${i.item} ($${i.price})`).join(', ');
+      const total = cart.reduce((sum, i) => sum + i.price, 0).toFixed(2);
+      const items = cart.map(i => `${i.item} ($${i.price.toFixed(2)})`).join(', ');
       cartDiv.innerText = `🛒 Cart: ${items}. Total: $${total}`;
     }
 
