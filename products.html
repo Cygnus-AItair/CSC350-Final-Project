@@ -12,6 +12,8 @@
     <h1>Pantry Items</h1>
     <div class="nav-buttons">
       <button onclick="location.href='foodbak.html'">Home</button>
+      <button onclick="toggleModal('signinModal')">Sign In</button>
+      <button onclick="toggleModal('signupModal')">Sign Up</button>
       <button onclick="location.href='cart.html'">Cart</button>
     </div>
   </header>
@@ -122,6 +124,9 @@
   <div class ="section">
     <div class="cart-status" id="cartStatus">
       🛒 Your cart is empty.
+        <button onclick="location.href='cart.html'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
+        Checkout
+      </button>
     </div>
   </div>
 
