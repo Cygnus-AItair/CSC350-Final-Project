@@ -28,7 +28,7 @@
       border-radius: 4px;
     }
 
-    .hero {
+    .table {
       background: url("images/Table.jpg") center/cover no-repeat;
       height: 500px;
       display: flex;
@@ -38,7 +38,7 @@
       text-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    .hero-products {
+    .table-products {
       background: url("images/pantry.jpg") center/cover no-repeat;
       height: 500px;
       display: flex;
@@ -48,7 +48,7 @@
       text-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
-    .hero h2, .hero-products h2 {
+    .table h2, .table-products h2 {
       font-size: 3rem;
       background: rgba(0,0,0,0.4);
       padding: 20px;
@@ -140,4 +140,14 @@
 
     .modal-content button {
       margin-top: 10px;
+    }
+
+    .btn {
+    padding: 10px 16px;
+    border: none;
+    background-color: #333;
+    color: #f2ebe9; 
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px; 
     }
