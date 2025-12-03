@@ -31,28 +31,28 @@
         <img src="images/rice.jpg" alt="White Rice" />
         <h3>White Rice</h3>
         <p>5 lb bag</p>
-        <button onclick="addToCart('White Rice (5lb)', 1, 0.70)">Add to Cart</button>
+        <button onclick="addToCart('White Rice (5lb)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/pasta.jpg" alt="Pasta" />
         <h3>Pasta (1 lb)</h3>
         <p>16 oz box</p>
-        <button onclick="addToCart('Pasta (1 lb)', 1, 1.20)">Add to Cart</button>
+        <button onclick="addToCart('Pasta (1 lb)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/oats.jpg" alt="Rolled Oats" />
         <h3>Steel Cut Oats</h3>
         <p>2 lb bag</p>
-        <button onclick="addToCart('Steel Cut Oats (2 lb)', 1, 1.00)">Add to Cart</button>
+        <button onclick="addToCart('Steel Cut Oats (2 lb)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/bread.jpg" alt="Bread" />
         <h3>Bread</h3>
         <p>1 Loaf</p>
-        <button onclick="addToCart('Bread (1 loaf)', 1, 2.50)">Add to Cart</button>
+        <button onclick="addToCart('Bread (1 loaf)', 1)">Add to Cart</button>
         </div>
     </div>
     </div>
@@ -64,28 +64,28 @@
         <img src="images/oliveoil.jpg" alt="Olive Oil" />
         <h3>Olive Oil</h3>
         <p>16 oz bottle</p>
-        <button onclick="addToCart('Olive Oil (16 oz)', 1, 5.50)">Add to Cart</button>
+        <button onclick="addToCart('Olive Oil (16 oz)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/peanutbutter.jpg" alt="Peanut Butter" />
         <h3>Peanut Butter</h3>
         <p>16 oz jar</p>
-        <button onclick="addToCart('Peanut Butter (1 lb)', 1, 3.00)">Add to Cart</button>
+        <button onclick="addToCart('Peanut Butter (1 lb)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/butter.jpg" alt="Butter" />
         <h3>Butter</h3>
         <p>1 Carton</p>
-        <button onclick="addToCart('Butter (1 lb)', 1, 1.50)">Add to Cart</button>
+        <button onclick="addToCart('Butter (1 lb)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/dressing.jpg" alt="Dressing" />
         <h3>Salad Dressing</h3>
         <p>16oz Bottle</p>
-        <button onclick="addToCart('Sald Dressing (!6 oz)', 1, 2.75)">Add to Cart</button>
+        <button onclick="addToCart('Sald Dressing (!6 oz)', 1)">Add to Cart</button>
         </div>
     </div>
     </div>
@@ -97,28 +97,28 @@
         <img src="images/beans.jpg" alt="Black Beans" />
         <h3>Black Beans</h3>
         <p>15 oz can</p>
-        <button onclick="addToCart('Black Beans (16 oz)', 1, 1.25)">Add to Cart</button>
+        <button onclick="addToCart('Black Beans (16 oz)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/tomatoes.jpg" alt="Diced Tomatoes" />
         <h3>Diced Tomatoes</h3>
         <p>14 oz can</p>
-        <button onclick="addToCart('Diced Tomatoes (14 oz)', 1, 1.10)">Add to Cart</button>
+        <button onclick="addToCart('Diced Tomatoes (14 oz)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/peaches.jpg" alt="Peaches" />
         <h3>Canned Peaches</h3>
         <p>14 oz can</p>
-        <button onclick="addToCart('Canned Peaches (14 oz)', 1, 0.25)">Add to Cart</button>
+        <button onclick="addToCart('Canned Peaches (14 oz)', 1)">Add to Cart</button>
         </div>
 
         <div class="product">
         <img src="images/corn.jpg" alt="Corn" />
         <h3>Canned Corn</h3>
         <p>14 oz can</p>
-        <button onclick="addToCart('Canned Corn (14 oz)', 1, 1.30)">Add to Cart</button>
+        <button onclick="addToCart('Canned Corn (14 oz)', 1)">Add to Cart</button>
         </div>
     </div>
     </div>
@@ -156,9 +156,8 @@
   <script>
     let cart = [];
 
-    function addToCart(item, quantity, pricePerUnit) {
-      const price = Number(quantity) * Number(pricePerUnit);
-      cart.push({ item, quantity, price });
+    function addToCart(item, quantity) {
+      cart.push({ item, quantity});
       updateCartStatus();
     }
 
@@ -168,13 +167,12 @@
         cartDiv.innerText = '🛒 Your cart is empty.';
         return;
       }
-      const total = cart.reduce((sum, i) => sum + i.price, 0).toFixed(2);
-      const items = cart.map(i => `${i.item} (Qty: ${i.quantity}, $${i.price.toFixed(2)})`).join(', ');
-      cartDiv.innerText = `🛒 Cart: ${items}. Total: $${total}`;
+      const items = cart.map(i => `${i.item} {Qty: $(i.quantity})').join(',');
+      cartDiv.innerText = '🛒 Cart: ${items}.';
     }
 
     function viewCart() {
-      alert(cart.length ? cart.map(i => `${i.item} - $${i.price}`).join('\n') : 'Cart is empty.');
+      alert(cart.length ? cart.map(i => `${i.item} - Quantity: {i.quantity}`).join('\n') : 'Cart is empty.');
     }
 
     function toggleModal(id) {
