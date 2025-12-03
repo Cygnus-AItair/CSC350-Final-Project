@@ -11,7 +11,7 @@
 <header>
   <h1>Pantry Items</h1>
   <div class="nav-buttons">
-    <button onclick="location.href='foodbank.psp'">Home</button>
+    <button onclick="location.href='foodbank.php'">Home</button>
     <button id="signinBtn" onclick="toggleModal('signinModal')">Sign In</button>
     <button id="signupBtn" onclick="toggleModal('signupModal')">Sign Up</button>
     <button onclick="location.href='cart.php'">Cart</button>
