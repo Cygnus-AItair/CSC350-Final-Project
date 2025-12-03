@@ -32,19 +32,19 @@
         <img src="images/rice.jpg" alt="Product 1" />
         <h3>Rice</h3>
         <p>1lb bag</p>
-        <button onclick="addToCart('Rice (1 lb)', 1, 0.70)">Add to Cart</button>
+        <button onclick="addToCart('Rice (1 lb)', 1)">Add to Cart</button>
       </div>
       <div class="product">
         <img src="images/oliveoil.jpg" alt="Product 2" />
         <h3>Olive Oil</h3>
         <p>16oz Bottle</p>
-        <button onclick="addToCart('Olive Oil (16oz)', 1, 5.50)">Add to Cart</button>
+        <button onclick="addToCart('Olive Oil (16oz)', 1)">Add to Cart</button>
       </div>
       <div class="product">
         <img src="images/butter.jpg" alt="Product 3" />
         <h3>Butter</h3>
         <p>1lb Stick of butter</p>
-        <button onclick="addToCart('Butter (1 lb)', 1, 1.50)">Add to Cart</button>
+        <button onclick="addToCart('Butter (1 lb)', 1)">Add to Cart</button>
       </div>
     </div>
 
@@ -86,9 +86,8 @@
   <script>
     let cart = [];
 
-    function addToCart(item, quantity, pricePerUnit) {
-      const price = Number(quantity) * Number(pricePerUnit);
-      cart.push({ item, quantity, price });
+    function addToCart(item, quantity) {
+      cart.push({ item, quantity});
       updateCartStatus();
     }
 
@@ -98,13 +97,12 @@
         cartDiv.innerText = '🛒 Your cart is empty.';
         return;
       }
-      const total = cart.reduce((sum, i) => sum + i.price, 0).toFixed(2);
-      const items = cart.map(i => `${i.item} (Qty: ${i.quantity}, $${i.price.toFixed(2)})`).join(', ');
-      cartDiv.innerText = `🛒 Cart: ${items}. Total: $${total}`;
+      const items = cart.map(i => `${i.item} (Qty: ${i.quantity})`).join(', ');
+      cartDiv.innerText = `🛒 Cart: ${items}`;
     }
 
     function viewCart() {
-      alert(cart.length ? cart.map(i => `${i.item} - $${i.price}`).join('\n') : 'Cart is empty.');
+      alert(cart.length ? cart.map(i => `${i.item} - Quantity: $(i.quantity}').join('\n') : 'Cart is empty.');
     }
 
     function toggleModal(id) {
