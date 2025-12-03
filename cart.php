@@ -10,7 +10,7 @@
 <header>
   <h1>Your Pantry Cart</h1>
   <div class="nav-buttons">
-    <button onclick="location.href='foodbak.php'">Home</button>
+    <button onclick="location.href='foodbank.php'">Home</button>
     <button onclick="location.href='products.php'">Pantry</button>
     <button id="signinBtn">Sign In</button>
     <button id="signupBtn">Sign Up</button>
