@@ -8,16 +8,20 @@
 </head>
 <body>
 
-  <header>
-    <h1>Welcome</h1>
-    <div class="nav-buttons">
-      <button onclick="toggleModal('signinModal')">Sign In</button>
-      <button onclick="toggleModal('signupModal')">Sign Up</button>
-      <button onclick="location.href='cart.html'">Cart</button>
-    </div>
-  </header>
+<header>
+  <h1>Welcome</h1>
+  <div class="nav-buttons">
+    <!-- Visible by default -->
+    <button id="signinBtn" onclick="toggleModal('signinModal')">Sign In</button>
+    <button id="signupBtn" onclick="toggleModal('signupModal')">Sign Up</button>
+    <button onclick="location.href='cart.php'">Cart</button>
 
-  <div class="hero">
+    <!-- Hidden by default Use PHP to enable display--> 
+    <button id="logoutBtn" style="display:none;">Log Out</button>
+  </div>
+</header>
+
+  <div class="table">
     <h2>The Pantry</h2>
   </div>
 
@@ -45,14 +49,14 @@
     </div>
 
     <div style="text-align: center; margin-top: 40px;">
-      <button onclick="location.href='products.html'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;">
+      <button onclick="location.href='products.php'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;">
         View All Pantry Products
       </button>
     </div>
 
     <div class="cart-status" id="cartStatus">
       🛒 Your cart is empty.
-      <button onclick="location.href='cart.html'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
+      <button onclick="location.href='cart.php'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
         Checkout
       </button>
     </div>

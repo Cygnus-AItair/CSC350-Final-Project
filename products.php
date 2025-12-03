@@ -8,17 +8,19 @@
 </head>
 <body>
 
-  <header>
-    <h1>Pantry Items</h1>
-    <div class="nav-buttons">
-      <button onclick="location.href='foodbak.html'">Home</button>
-      <button onclick="toggleModal('signinModal')">Sign In</button>
-      <button onclick="toggleModal('signupModal')">Sign Up</button>
-      <button onclick="location.href='cart.html'">Cart</button>
-    </div>
-  </header>
+<header>
+  <h1>Pantry Items</h1>
+  <div class="nav-buttons">
+    <button onclick="location.href='foodbank.psp'">Home</button>
+    <button id="signinBtn" onclick="toggleModal('signinModal')">Sign In</button>
+    <button id="signupBtn" onclick="toggleModal('signupModal')">Sign Up</button>
+    <button onclick="location.href='cart.php'">Cart</button>
+    <!-- Hidden logout button -->
+    <button id="logoutBtn" style="display:none;">Log Out</button>
+  </div>
+</header>
 
-  <div class="hero-products">
+  <div class="table-products">
     <h2>Pantry Products</h2>
   </div>
 
@@ -124,7 +126,7 @@
   <div class ="section">
     <div class="cart-status" id="cartStatus">
       🛒 Your cart is empty.
-        <button onclick="location.href='cart.html'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
+        <button onclick="location.href='cart.php'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
         Checkout
       </button>
     </div>
