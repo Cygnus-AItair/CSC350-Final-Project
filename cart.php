@@ -25,7 +25,7 @@
       <?php foreach ($cartItems as $item): ?>
         <li>
           <?= htmlspecialchars($item['name']) ?> 
-          (Qty: <?= $item['quantity'] ?>, $<?= number_format($item['price'] * $item['quantity'], 2) ?>)
+          (Qty: <?= $item['quantity'] ?>)
           <form action="delete_from_cart.php" method="post" class="delete-form">
             <input type="hidden" name="cart_id" value="<?= $item['id'] ?>">
             <button type="submit" class="btn">Delete</button>
