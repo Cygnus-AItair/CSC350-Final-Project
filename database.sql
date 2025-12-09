@@ -20,7 +20,7 @@ CREATE TABLE carts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     session_id VARCHAR(255) NOT NULL,
-    status ENUM ('active', 'abandoned', 'converted' DEFAULT 'active',
+    status ENUM ('active', 'abandoned', 'converted') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -65,3 +65,8 @@ INSERT INTO products (name, description, category, image_path, unit) VALUES
 ('Diced Tomatoes', 'Canned diced tomatoes', 'Canned Goods', 'images/tomatoes.jpg', '14 oz can'),
 ('Canned Peaches', 'Sweet canned peaches', 'Canned Goods', 'images/peaches.jpg', '14 oz can'),
 ('Canned Corn', 'Whole kernel corn', 'Canned Goods', 'images/corn.jpg', '14 oz can');
+
+-- Admin account
+-- Password: 'admin123' (hashed with password_hash())
+INSERT INTO users (name, email, password, role) VALUES
+('Administrator', 'admin@foodbank.com', '$2y$10$FgK5b/6qGk8v6Q5Z8q7QwO5V5q5Q5Z8q7QwO5V5q5Q5Z8q7QwO5V5q5', 'admin');
