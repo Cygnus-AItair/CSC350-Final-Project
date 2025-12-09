@@ -1,193 +1,64 @@
+<?php
+session_start();
+include 'db.php';
+
+// Get products ordered by category and name
+$stmt = $conn->prepare("SELECT * FROM products ORDER BY category, name");
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Organize products by category
+$productsByCategory = [];
+while ($row = $result->fetch_assoc()) {
+    $productsByCategory[$row['category']][] = $row;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pantry Products</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <h1>Pantry Items</h1>
+  <h1>Products</h1>
   <div class="nav-buttons">
-    <button onclick="location.href='foodbank.php'">Home</button>
-    <button id="signinBtn" onclick="toggleModal('signinModal')">Sign In</button>
-    <button id="signupBtn" onclick="toggleModal('signupModal')">Sign Up</button>
+    <button onclick="location.href='foodbak.php'">Home</button>
     <button onclick="location.href='cart.php'">Cart</button>
-    <!-- Hidden logout button -->
-    <button id="logoutBtn" style="display:none;">Log Out</button>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <span class="welcome">Welcome, <?= htmlspecialchars($_SESSION['name']) ?></span>
+        <?php if ($_SESSION['user_role'] === 'admin'): ?>
+            <button onclick="location.href='admin_dashboard.php'">Admin Dashboard</button>
+        <?php endif; ?>
+        <button onclick="location.href='logout.php'">Log Out</button>
+    <?php else: ?>
+        <button onclick="location.href='signin.php'">Sign In</button>
+        <button onclick="location.href='signup.php'">Sign Up</button>
+    <?php endif; ?>
   </div>
 </header>
 
-  <div class="table-products">
-    <h2>Pantry Products</h2>
-  </div>
-
+<?php foreach ($productsByCategory as $category => $products): ?>
     <div class="section">
-    <h2>Grains</h2>
-    <div class="products">
-        <div class="product">
-        <img src="images/rice.jpg" alt="White Rice" />
-        <h3>White Rice</h3>
-        <p>5 lb bag</p>
-        <button onclick="addToCart('White Rice (5lb)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/pasta.jpg" alt="Pasta" />
-        <h3>Pasta (1 lb)</h3>
-        <p>16 oz box</p>
-        <button onclick="addToCart('Pasta (1 lb)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/oats.jpg" alt="Rolled Oats" />
-        <h3>Steel Cut Oats</h3>
-        <p>2 lb bag</p>
-        <button onclick="addToCart('Steel Cut Oats (2 lb)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/bread.jpg" alt="Bread" />
-        <h3>Bread</h3>
-        <p>1 Loaf</p>
-        <button onclick="addToCart('Bread (1 loaf)', 1)">Add to Cart</button>
+        <h2><?= htmlspecialchars($category) ?></h2>
+        <div class="products">
+            <?php foreach ($products as $product): ?>
+                <div class="product">
+                    <img src="<?= htmlspecialchars($product['image_path']) ?>" 
+                         alt="<?= htmlspecialchars($product['name']) ?>">
+                    <h3><?= htmlspecialchars($product['name']) ?></h3>
+                    <p><?= htmlspecialchars($product['unit']) ?></p>
+                    <form action="add_to_cart.php" method="POST">
+                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
-    </div>
-    
-    <div class="section">
-    <h2>Fats & Oils</h2>
-    <div class="products">
-        <div class="product">
-        <img src="images/oliveoil.jpg" alt="Olive Oil" />
-        <h3>Olive Oil</h3>
-        <p>16 oz bottle</p>
-        <button onclick="addToCart('Olive Oil (16 oz)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/peanutbutter.jpg" alt="Peanut Butter" />
-        <h3>Peanut Butter</h3>
-        <p>16 oz jar</p>
-        <button onclick="addToCart('Peanut Butter (1 lb)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/butter.jpg" alt="Butter" />
-        <h3>Butter</h3>
-        <p>1 Carton</p>
-        <button onclick="addToCart('Butter (1 lb)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/dressing.jpg" alt="Dressing" />
-        <h3>Salad Dressing</h3>
-        <p>16oz Bottle</p>
-        <button onclick="addToCart('Sald Dressing (!6 oz)', 1)">Add to Cart</button>
-        </div>
-    </div>
-    </div>
-
-    <div class="section">
-    <h2>Canned Goods</h2>
-    <div class="products">
-        <div class="product">
-        <img src="images/beans.jpg" alt="Black Beans" />
-        <h3>Black Beans</h3>
-        <p>15 oz can</p>
-        <button onclick="addToCart('Black Beans (16 oz)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/tomatoes.jpg" alt="Diced Tomatoes" />
-        <h3>Diced Tomatoes</h3>
-        <p>14 oz can</p>
-        <button onclick="addToCart('Diced Tomatoes (14 oz)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/peaches.jpg" alt="Peaches" />
-        <h3>Canned Peaches</h3>
-        <p>14 oz can</p>
-        <button onclick="addToCart('Canned Peaches (14 oz)', 1)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-        <img src="images/corn.jpg" alt="Corn" />
-        <h3>Canned Corn</h3>
-        <p>14 oz can</p>
-        <button onclick="addToCart('Canned Corn (14 oz)', 1)">Add to Cart</button>
-        </div>
-    </div>
-    </div>
-    
-  <div class ="section">
-    <div class="cart-status" id="cartStatus">
-      🛒 Your cart is empty.
-        <button onclick="location.href='cart.php'" style="padding: 12px 20px; background-color: #333; color: #f2ebe9; border: none; border-radius: 4px; cursor: pointer;align-self: right;">
-        Checkout
-      </button>
-    </div>
-  </div>
-
-  <!-- Sign In Modal -->
-  <div class="modal" id="signinModal">
-    <div class="modal-content">
-      <h2>Sign In</h2>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button onclick="toggleModal('signinModal')">Submit</button>
-    </div>
-  </div>
-
-  <!-- Sign Up Modal -->
-  <div class="modal" id="signupModal">
-    <div class="modal-content">
-      <h2>Sign Up</h2>
-      <input type="text" placeholder="Name" />
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button onclick="toggleModal('signupModal')">Register</button>
-    </div>
-  </div>
-
-  <script>
-    let cart = [];
-
-    function addToCart(item, quantity) {
-      cart.push({ item, quantity});
-      updateCartStatus();
-    }
-
-    function updateCartStatus() {
-      const cartDiv = document.getElementById('cartStatus');
-      if (cart.length === 0) {
-        cartDiv.innerText = '🛒 Your cart is empty.';
-        return;
-      }
-      const items = cart.map(i => `${i.item} {Qty: $(i.quantity})').join(',');
-      cartDiv.innerText = '🛒 Cart: ${items}.';
-    }
-
-    function viewCart() {
-      alert(cart.length ? cart.map(i => `${i.item} - Quantity: {i.quantity}`).join('\n') : 'Cart is empty.');
-    }
-
-    function toggleModal(id) {
-      const modal = document.getElementById(id);
-      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    // Close modals on outside click
-    window.onclick = function(event) {
-      ['signinModal', 'signupModal'].forEach(id => {
-        const modal = document.getElementById(id);
-        if (event.target === modal) modal.style.display = 'none';
-      });
-    };
-  </script>
+<?php endforeach; ?>
 
 </body>
 </html>

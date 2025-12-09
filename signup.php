@@ -25,6 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($insert->execute()) {
         $_SESSION['user_id'] = $insert->insert_id;
+        $_SESSION['name'] = $name;
+        $_SESSION['user_role'] = 'user'; 
         header("Location: foodbak.php");
         exit();
     } else {

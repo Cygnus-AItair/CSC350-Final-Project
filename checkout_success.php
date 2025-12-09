@@ -5,9 +5,9 @@ include 'db.php';
 // Get session ID
 $session_id = session_id();
 
-//  Find a active cart for this session
+// Find the active cart
 $cartQuery = $conn->prepare("
-    SELECT id 
+    SELECT id, user_id 
     FROM carts 
     WHERE session_id = ? AND status = 'active'
     LIMIT 1
@@ -17,60 +17,53 @@ $cartQuery->execute();
 $cartResult = $cartQuery->get_result();
 
 if ($cartResult->num_rows === 0) {
-    die("No active cart found.");
+    // No active cart
+    header("Location: cart.php");
+    exit();
 }
 
-$cart_id = $cartResult->fetch_assoc()['id'];
+$cart = $cartResult->fetch_assoc();
+$cart_id = $cart['id'];
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-// Create a new order
-$insertOrder = $conn->prepare("
-    INSERT INTO orders (session_id, created_at)
-    VALUES (?, NOW())
+// Create new order
+$orderQuery = $conn->prepare("
+    INSERT INTO orders (user_id, cart_id, status) 
+    VALUES (?, ?, 'pending')
 ");
-$insertOrder->bind_param("s", $session_id);
-$insertOrder->execute();
-$order_id = $insertOrder->insert_id;
+$orderQuery->bind_param("ii", $user_id, $cart_id);
+$orderQuery->execute();
+$order_id = $orderQuery->insert_id;
 
-//  Move cart items into order_items
+// Copy cart items into order_items
 $itemQuery = $conn->prepare("
-    SELECT product_id, quantity
-    FROM cart_items
+    SELECT product_id, quantity 
+    FROM cart_items 
     WHERE cart_id = ?
 ");
 $itemQuery->bind_param("i", $cart_id);
 $itemQuery->execute();
-$items = $itemQuery->get_result();
+$itemResult = $itemQuery->get_result();
 
-while ($row = $items->fetch_assoc()) {
+while ($item = $itemResult->fetch_assoc()) {
     $insertItem = $conn->prepare("
-        INSERT INTO order_items (order_id, product_id, quantity)
+        INSERT INTO order_items (order_id, product_id, quantity) 
         VALUES (?, ?, ?)
     ");
-    $insertItem->bind_param("iii", $order_id, $row['product_id'], $row['quantity']);
+    $insertItem->bind_param("iii", $order_id, $item['product_id'], $item['quantity']);
     $insertItem->execute();
 }
 
-// Clear cart items
-$deleteItems = $conn->prepare("DELETE FROM cart_items WHERE cart_id = ?");
-$deleteItems->bind_param("i", $cart_id);
-$deleteItems->execute();
-
+// Mark cart as converted
 $updateCart = $conn->prepare("
-    UPDATE carts SET status = 'converted' WHERE id = ?
+    UPDATE carts 
+    SET status = 'converted' 
+    WHERE id = ?
 ");
 $updateCart->bind_param("i", $cart_id);
 $updateCart->execute();
 
-// Create a new empty cart
-$newStatus = 'active';
-$newCart = $conn->prepare("
-    INSERT INTO carts (user_id, session_id, status)
-    VALUES (NULL, ?, ?)
-");
-$newCart->bind_param("ss", $session_id, $newStatus);
-$newCart->execute();
-
 // Redirect to thank you page
-header("Location: thankyou.php?order_id=$order_id");
-exit;
+header("Location: thankyou.php");
+exit();
 ?>

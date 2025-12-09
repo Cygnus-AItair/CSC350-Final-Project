@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
 include 'db.php';
 
@@ -20,10 +17,8 @@ $cartQuery->execute();
 $cartResult = $cartQuery->get_result();
 
 if ($cartResult->num_rows > 0) {
-    // Cart exists
     $cart_id = $cartResult->fetch_assoc()['id'];
 } else {
-    // 2. Create a new cart for this session
     $status = 'active';
     $insertCart = $conn->prepare("
         INSERT INTO carts (user_id, session_id, status)
@@ -34,7 +29,7 @@ if ($cartResult->num_rows > 0) {
     $cart_id = $insertCart->insert_id;
 }
 
-//  Get product ID from POST
+// Get product ID from POST
 if (!isset($_POST['product_id'])) {
     die("No product selected.");
 }
@@ -51,7 +46,6 @@ $checkItem->execute();
 $itemResult = $checkItem->get_result();
 
 if ($itemResult->num_rows > 0) {
-    // Update quantity
     $updateItem = $conn->prepare("
         UPDATE cart_items 
         SET quantity = quantity + 1
@@ -60,7 +54,6 @@ if ($itemResult->num_rows > 0) {
     $updateItem->bind_param("ii", $cart_id, $product_id);
     $updateItem->execute();
 } else {
-    // Insert new item
     $insertItem = $conn->prepare("
         INSERT INTO cart_items (cart_id, product_id, quantity)
         VALUES (?, ?, 1)
@@ -69,7 +62,11 @@ if ($itemResult->num_rows > 0) {
     $insertItem->execute();
 }
 
-// Redirect to cart
-header("Location: " . $_SERVER['HTTP_REFERER']);
-exit;
+// Add success message
+$_SESSION['message'] = "Item added to cart!";
+
+// Redirect back safely
+$redirect = $_SERVER['HTTP_REFERER'] ?? 'cart.php';
+header("Location: $redirect");
+exit();
 ?>

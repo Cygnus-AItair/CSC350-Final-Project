@@ -2,18 +2,18 @@
 session_start();
 include 'db.php';
 
-if (!isset($_POST['item_id'])) {
-    die("No item selected.");
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['item_id'])) {
+    $item_id = intval($_POST['item_id']);
+    $deleteQuery = $conn->prepare("DELETE FROM cart_items WHERE id = ?");
+    $deleteQuery->bind_param("i", $item_id);
+    if ($deleteQuery->execute()) {
+        $_SESSION['message'] = "Item removed from cart.";
+    } else {
+        $_SESSION['error'] = "Failed to remove item.";
+    }
 }
 
-$item_id = intval($_POST['item_id']);
-
-$delete = $conn->prepare("DELETE FROM cart_items WHERE id = ?");
-$delete->bind_param("i", $item_id);
-$delete->execute();
-
 header("Location: cart.php");
-exit;
+exit();
 ?>
-
-

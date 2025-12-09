@@ -3,10 +3,10 @@ $servername = "localhost";
 $username = "root";
 $password = ""; 
 $database = "pantry_db";
-$port = 3308;
+$port = 3306;
 
-$conn = new mysqli("localhost", "root", "", "pantry_db");
+$conn = new mysqli($servername, $username, $password, $database, $port);
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connection(error));
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
