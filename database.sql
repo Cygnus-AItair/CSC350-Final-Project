@@ -1,13 +1,15 @@
 CREATE DATABASE pantry_db;
 USE pantry_db;
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('user','admin') DEFAULT 'user',
+    role ENUM('user', 'admin') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -17,15 +19,17 @@ CREATE TABLE products (
     unit VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 CREATE TABLE carts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     session_id VARCHAR(255) NOT NULL,
-    status ENUM ('active', 'abandoned', 'converted') DEFAULT 'active',
+    status ENUM('active', 'abandoned', 'converted') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
 CREATE TABLE cart_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cart_id INT NOT NULL,
@@ -35,6 +39,7 @@ CREATE TABLE cart_items (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     UNIQUE KEY unique_cart_product (cart_id, product_id)
 );
+
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -44,6 +49,7 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (cart_id) REFERENCES carts(id)
 );
+
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
@@ -53,6 +59,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
+
 INSERT INTO products (name, description, category, image_path, unit) VALUES
 ('White Rice', 'Premium quality white rice', 'Grains', 'images/rice.jpg', '5 lb bag'),
 ('Pasta', 'High quality pasta', 'Grains', 'images/pasta.jpg', '16 oz box'),

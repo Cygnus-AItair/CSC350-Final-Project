@@ -2,6 +2,12 @@
 session_start();
 require_once 'db.php';
 
+// Ensure only admins can access
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: foodbak.php');
+    exit();
+}
+
 if (!isset($_GET['id'])) {
     $_SESSION['error'] = "No product ID provided.";
     header("Location: admin_dashboard.php");

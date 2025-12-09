@@ -69,10 +69,10 @@ include 'db.php';
 <div class="modal" id="signinModal">
   <div class="modal-content">
     <h2>Sign In</h2>
-    <form action="signin.php" method="post">
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Submit</button>
+      <form method="POST" action="signin.php">
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Submit</button>
     </form>
   </div>
 </div>

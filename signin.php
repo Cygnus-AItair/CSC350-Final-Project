@@ -17,8 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
-            $_SESSION['user_role'] = $user['role']; 
-            header("Location: foodbak.php");
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['email'] = $email;
+
+            if ($user['role'] === 'admin') {
+                header("Location: admin_dashboard.php");
+            } else {
+                header("Location: foodbak.php");
+            }
             exit();
         } else {
             $_SESSION['error'] = "Invalid password.";

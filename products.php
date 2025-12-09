@@ -34,8 +34,8 @@ while ($row = $result->fetch_assoc()) {
         <?php endif; ?>
         <button onclick="location.href='logout.php'">Log Out</button>
     <?php else: ?>
-        <button onclick="location.href='signin.php'">Sign In</button>
-        <button onclick="location.href='signup.php'">Sign Up</button>
+        <button id="signinBtn" onclick="toggleModal('signinModal')">Sign In</button>
+        <button id="signupBtn" onclick="toggleModal('signupModal')">Sign Up</button>
     <?php endif; ?>
   </div>
 </header>
@@ -59,6 +59,46 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </div>
 <?php endforeach; ?>
+
+<!-- Sign In Modal -->
+<div class="modal" id="signinModal">
+  <div class="modal-content">
+    <h2>Sign In</h2>
+    <form method="POST" action="signin.php">
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- Sign Up Modal -->
+<div class="modal" id="signupModal">
+  <div class="modal-content">
+    <h2>Sign Up</h2>
+    <form method="POST" action="signup.php">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function toggleModal(id) {
+  const modal = document.getElementById(id);
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// Close modals on outside click
+window.onclick = function(event) {
+  ['signinModal', 'signupModal'].forEach(id => {
+    const modal = document.getElementById(id);
+    if (event.target === modal) modal.style.display = 'none';
+  });
+};
+</script>
 
 </body>
 </html>
