@@ -1,0 +1,12 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = ""; 
+$database = "pantry_db";
+$port = 3308;
+
+$conn = new mysqli("localhost", "root", "", "pantry_db");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connection(error));
+}
+?>

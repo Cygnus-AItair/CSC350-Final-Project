@@ -1,0 +1,183 @@
+<?php
+session_start();
+include 'db.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart - The Pantry</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .modal {
+      display: none !important;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    h2.category {
+      margin-top: 40px;
+      font-size: 1.8em;
+      color: #333;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product {
+      width: 250px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>The Pantry</h1>
+  <div class="nav-buttons">
+  <button onclick="location.href='foodbak.php'">Home</button>
+  <button onclick="location.href='products.php'">Products</button>
+  <button onclick="location.href='cart.php'">Cart</button>
+
+  <?php if (isset($_SESSION['user_id'])): ?>
+      <span class="welcome">Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+      <button onclick="location.href='logout.php'">Log Out</button>
+  <?php endif; ?>
+</div>
+</header>
+
+<div class="section">
+  <h1>Your Cart</h1>
+
+  <?php
+  // ✅ Get the correct cart_id
+  $session_id = session_id();
+  $cartLookup = $conn->prepare("SELECT id FROM carts WHERE session_id = ? LIMIT 1");
+  $cartLookup->bind_param("s", $session_id);
+  $cartLookup->execute();
+  $cartResult = $cartLookup->get_result();
+
+  if ($cartResult->num_rows === 0) {
+      echo "<p>Your cart is empty.</p>";
+  } else {
+      $cart_id = $cartResult->fetch_assoc()['id'];
+
+      // ✅ Get all items with category
+      $stmt = $conn->prepare("
+          SELECT c.id AS cart_item_id, p.name, p.description, p.image_path, p.category, c.quantity
+          FROM cart_items c
+          JOIN products p ON c.product_id = p.id
+          WHERE c.cart_id = ?
+          ORDER BY p.category
+      ");
+      $stmt->bind_param("i", $cart_id);
+      $stmt->execute();
+      $items = $stmt->get_result();
+
+      if ($items->num_rows === 0) {
+          echo "<p>Your cart is empty.</p>";
+      } else {
+          $currentCategory = "";
+
+          while ($row = $items->fetch_assoc()) {
+
+              // ✅ Print category header when category changes
+              if ($currentCategory !== $row['category']) {
+                  if ($currentCategory !== "") echo "</div>"; // close previous group
+                  $currentCategory = $row['category'];
+                  echo "<h2 class='category'>{$currentCategory}</h2>";
+                  echo "<div class='products'>";
+              }
+  ?>
+              <div class="product">
+                <img src="<?php echo htmlspecialchars($row['image_path']); ?>" />
+                <h3><?php echo htmlspecialchars($row['name']); ?></h3>
+                <p><?php echo htmlspecialchars($row['description']); ?></p>
+                <p><strong>Quantity:</strong> <?php echo $row['quantity']; ?></p>
+
+                <form action="delete.php" method="post">
+                  <input type="hidden" name="item_id" value="<?php echo $row['cart_item_id']; ?>">
+                  <button type="submit">Remove</button>
+                </form>
+              </div>
+  <?php
+          }
+
+          echo "</div>"; // close last category group
+
+          echo '<div style="text-align:center; margin-top:30px;">
+                  <button onclick="location.href=\'checkout.php\'" class="btn">Proceed to Checkout</button>
+                </div>';
+      }
+  }
+  ?>
+</div>
+
+<!-- Sign In Modal -->
+<div class="modal" id="signinModal">
+  <div class="modal-content">
+    <h2>Sign In</h2>
+    <form action="signin.php" method="post">
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- Sign Up Modal -->
+<div class="modal" id="signupModal">
+  <div class="modal-content">
+    <h2>Sign Up</h2>
+    <form action="signup.php" method="post">
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("signinModal").style.display = "none";
+  document.getElementById("signupModal").style.display = "none";
+
+  function toggleModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  window.onclick = function(event) {
+    ['signinModal','signupModal'].forEach(id => {
+      const modal = document.getElementById(id);
+      if (event.target === modal) modal.style.display = 'none';
+    });
+  };
+</script>
+
+</body>
+</html>

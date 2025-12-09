@@ -1,0 +1,106 @@
+<?php
+session_start();
+include 'db.php';
+
+
+// Get session ID
+$session_id = session_id();
+
+// Find the cart for this session
+$cartQuery = $conn->prepare("
+    SELECT id 
+    FROM carts 
+    WHERE session_id = ?
+    LIMIT 1
+");
+$cartQuery->bind_param("s", $session_id);
+$cartQuery->execute();
+$cartResult = $cartQuery->get_result();
+
+if ($cartResult->num_rows > 0) {
+    $cart_id = $cartResult->fetch_assoc()['id'];
+
+    // Clear cart items
+    $deleteItems = $conn->prepare("DELETE FROM cart_items WHERE cart_id = ?");
+    $deleteItems->bind_param("i", $cart_id);
+    $deleteItems->execute();
+
+    // Old cart as converted
+    $updateCart = $conn->prepare("
+        UPDATE carts 
+        SET status = 'converted' 
+        WHERE id = ?
+    ");
+    $updateCart->bind_param("i", $cart_id);
+    $updateCart->execute();
+}
+
+// Auto-create a NEW empty cart for this session
+$newStatus = 'active';
+$newCart = $conn->prepare("
+    INSERT INTO carts (user_id, session_id, status)
+    VALUES (NULL, ?, ?)
+");
+$newCart->bind_param("ss", $session_id, $newStatus);
+$newCart->execute();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thankyou-container {
+            width: 80%;
+            margin: 60px auto;
+            text-align: center;
+        }
+        .thankyou-container h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+        .thankyou-container p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .btn-home {
+            padding: 12px 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+  <h1>Cart Confirmed</h1>
+  <div class="nav-buttons">
+    <button onclick="location.href='foodbak.php'">Home</button>
+    <button onclick="location.href='products.php'">Products</button>
+    <button onclick="location.href='cart.php'">Cart</button>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <button onclick="location.href='logout.php'">Log Out</button>
+    <?php else: ?>
+        <button onclick="location.href='signin.php'">Sign In</button>
+        <button onclick="location.href='signup.php'">Sign Up</button>
+    <?php endif; ?>
+  </div>
+</header>
+
+<div class="thankyou-container">
+    <h1>Order Confirmed</h1>
+    <p>Your pickup request has been successfully submitted.</p>
+    <p>A new cart has been created for you automatically.</p>
+
+    <button class="btn-home" onclick="location.href='foodbak.php'">
+        Return to Home
+    </button>
+</div>
+
+</body>
+</html>

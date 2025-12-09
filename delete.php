@@ -1,0 +1,19 @@
+<?php
+session_start();
+include 'db.php';
+
+if (!isset($_POST['item_id'])) {
+    die("No item selected.");
+}
+
+$item_id = intval($_POST['item_id']);
+
+$delete = $conn->prepare("DELETE FROM cart_items WHERE id = ?");
+$delete->bind_param("i", $item_id);
+$delete->execute();
+
+header("Location: cart.php");
+exit;
+?>
+
+
