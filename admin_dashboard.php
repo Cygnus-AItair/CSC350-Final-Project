@@ -21,7 +21,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     <header>
         <h1>Admin Dashboard</h1>
         <div class="nav-buttons">
-            <button onclick="location.href='foodbank.php'">Home</button>
+            <button onclick="location.href='foodbak.php'">Home</button>
             <button onclick="location.href='products.php'">View Products</button>
             <button onclick="location.href='logout.php'">Logout</button>
         </div>
@@ -42,8 +42,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             </thead>
             <tbody>
                 <?php
-                $stmt = $pdo->query("SELECT * FROM users ORDER BY created_at DESC");
-                while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+                $result = $conn->query("SELECT * FROM users ORDER BY created_at DESC");
+                while ($user = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$user['id']}</td>";
                     echo "<td>{$user['name']}</td>";
@@ -80,8 +81,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             </thead>
             <tbody>
                 <?php
-                $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
-                while ($product = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $result = $conn->query("SELECT * FROM products ORDER BY created_at DESC");
+                while ($product = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$product['id']}</td>";
                     echo "<td>{$product['name']}</td>";
@@ -113,13 +114,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             </thead>
             <tbody>
                 <?php
-                $stmt = $pdo->query("
+                $result = $conn->query("
                     SELECT o.*, u.name as user_name 
                     FROM orders o 
                     LEFT JOIN users u ON o.user_id = u.id 
                     ORDER BY o.created_at DESC
                 ");
-                while ($order = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($order = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$order['id']}</td>";
                     echo "<td>" . ($order['user_name'] ?: 'Guest') . "</td>";
