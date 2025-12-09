@@ -137,9 +137,9 @@
     <div class="modal-content">
       <h2>Sign In</h2>
       <form method="POST" action="signin.php">
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <button type="submit">Submit</button>
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit">Submit</button>
     </div>
   </div>
 
