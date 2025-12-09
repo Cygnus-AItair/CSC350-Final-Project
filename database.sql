@@ -5,6 +5,7 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE products (
@@ -32,7 +33,7 @@ CREATE TABLE cart_items (
     product_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
     FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     UNIQUE KEY unique_cart_product (cart_id, product_id)
 );
 CREATE TABLE orders (
