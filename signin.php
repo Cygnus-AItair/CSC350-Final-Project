@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, password, name, role FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -16,7 +16,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
-            header("Location: foodbak.php");
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_role'] = $user['role']; 
+            $_SESSION['user_email'] = $email;
+            
+            if ($user['role'] === 'admin') {
+                header("Location: admin_dashboard.php");
+            } else {
+                header("Location: foodbak.php");
+            }
             exit();
         } else {
             $_SESSION['error'] = "Invalid password.";
