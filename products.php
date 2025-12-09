@@ -136,9 +136,10 @@
   <div class="modal" id="signinModal">
     <div class="modal-content">
       <h2>Sign In</h2>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button onclick="toggleModal('signinModal')">Submit</button>
+      <form method="POST" action="signin.php">
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+        <button type="submit">Submit</button>
     </div>
   </div>
 
